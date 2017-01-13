@@ -1,0 +1,16 @@
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\bin\Debug\WyzwanieForms.exe.config
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\obj\Debug\WyzwanieForms.csprojResolveAssemblyReference.cache
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\obj\Debug\WyzwanieForms.Properties.Resources.resources
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\obj\Debug\WyzwanieForms.csproj.GenerateResource.Cache
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\bin\Debug\WyzwanieForms.exe
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\bin\Debug\WyzwanieForms.pdb
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\obj\Debug\WyzwanieForms.exe
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\obj\Debug\WyzwanieForms.pdb
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\bin\Debug\EngineIoClientDotNet.dll
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\bin\Debug\Newtonsoft.Json.dll
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\bin\Debug\SocketIoClientDotNet.dll
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\bin\Debug\WebSocket4Net.dll
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\bin\Debug\Newtonsoft.Json.xml
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\obj\Debug\WyzwanieForms.Form1.resources
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\obj\Debug\WyzwanieForms.FormGame.resources
+D:\Visual Studio Projects\WyzwanieForms\WyzwanieForms\obj\Debug\WyzwanieForms.WaitingForm.resources
