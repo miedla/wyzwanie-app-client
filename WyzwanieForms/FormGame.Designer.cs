@@ -36,22 +36,24 @@
             this.labelQuestionNumber = new System.Windows.Forms.Label();
             this.labelScore = new System.Windows.Forms.Label();
             this.labelScoreName = new System.Windows.Forms.Label();
+            this.labelQTime = new System.Windows.Forms.Label();
+            this.labelElapsedTime = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // labelQuestion
             // 
             this.labelQuestion.AutoSize = true;
-            this.labelQuestion.Location = new System.Drawing.Point(62, 9);
-            this.labelQuestion.MaximumSize = new System.Drawing.Size(300, 60);
+            this.labelQuestion.Location = new System.Drawing.Point(57, 46);
+            this.labelQuestion.MaximumSize = new System.Drawing.Size(200, 60);
             this.labelQuestion.MinimumSize = new System.Drawing.Size(0, 60);
             this.labelQuestion.Name = "labelQuestion";
-            this.labelQuestion.Size = new System.Drawing.Size(179, 60);
+            this.labelQuestion.Size = new System.Drawing.Size(182, 60);
             this.labelQuestion.TabIndex = 0;
-            this.labelQuestion.Text = "Pytanie dsad asd asdaswe dsad sad";
+            this.labelQuestion.Text = "Pytanie dsad asd asdaswe dsad sad dasdd ";
             // 
             // buttonA
             // 
-            this.buttonA.Location = new System.Drawing.Point(54, 74);
+            this.buttonA.Location = new System.Drawing.Point(49, 111);
             this.buttonA.Name = "buttonA";
             this.buttonA.Size = new System.Drawing.Size(200, 60);
             this.buttonA.TabIndex = 1;
@@ -61,7 +63,7 @@
             // 
             // buttonB
             // 
-            this.buttonB.Location = new System.Drawing.Point(54, 140);
+            this.buttonB.Location = new System.Drawing.Point(49, 177);
             this.buttonB.Name = "buttonB";
             this.buttonB.Size = new System.Drawing.Size(200, 60);
             this.buttonB.TabIndex = 2;
@@ -71,7 +73,7 @@
             // 
             // buttonC
             // 
-            this.buttonC.Location = new System.Drawing.Point(54, 206);
+            this.buttonC.Location = new System.Drawing.Point(49, 243);
             this.buttonC.Name = "buttonC";
             this.buttonC.Size = new System.Drawing.Size(200, 60);
             this.buttonC.TabIndex = 3;
@@ -81,7 +83,7 @@
             // 
             // buttonD
             // 
-            this.buttonD.Location = new System.Drawing.Point(54, 272);
+            this.buttonD.Location = new System.Drawing.Point(49, 309);
             this.buttonD.Name = "buttonD";
             this.buttonD.Size = new System.Drawing.Size(200, 60);
             this.buttonD.TabIndex = 4;
@@ -93,7 +95,7 @@
             // labelQuestionNumber
             // 
             this.labelQuestionNumber.AutoSize = true;
-            this.labelQuestionNumber.Location = new System.Drawing.Point(135, 339);
+            this.labelQuestionNumber.Location = new System.Drawing.Point(132, 382);
             this.labelQuestionNumber.Name = "labelQuestionNumber";
             this.labelQuestionNumber.Size = new System.Drawing.Size(30, 13);
             this.labelQuestionNumber.TabIndex = 5;
@@ -117,11 +119,31 @@
             this.labelScoreName.TabIndex = 7;
             this.labelScoreName.Text = "Score:";
             // 
+            // labelQTime
+            // 
+            this.labelQTime.AutoSize = true;
+            this.labelQTime.Location = new System.Drawing.Point(136, 9);
+            this.labelQTime.Name = "labelQTime";
+            this.labelQTime.Size = new System.Drawing.Size(26, 13);
+            this.labelQTime.TabIndex = 8;
+            this.labelQTime.Text = "time";
+            // 
+            // labelElapsedTime
+            // 
+            this.labelElapsedTime.AutoSize = true;
+            this.labelElapsedTime.Location = new System.Drawing.Point(66, 8);
+            this.labelElapsedTime.Name = "labelElapsedTime";
+            this.labelElapsedTime.Size = new System.Drawing.Size(70, 13);
+            this.labelElapsedTime.TabIndex = 9;
+            this.labelElapsedTime.Text = "Elapsed time:";
+            // 
             // FormGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 361);
+            this.ClientSize = new System.Drawing.Size(284, 404);
+            this.Controls.Add(this.labelElapsedTime);
+            this.Controls.Add(this.labelQTime);
             this.Controls.Add(this.labelScoreName);
             this.Controls.Add(this.labelScore);
             this.Controls.Add(this.labelQuestionNumber);
@@ -147,5 +169,7 @@
         private System.Windows.Forms.Label labelQuestionNumber;
         private System.Windows.Forms.Label labelScore;
         private System.Windows.Forms.Label labelScoreName;
+        private System.Windows.Forms.Label labelQTime;
+        private System.Windows.Forms.Label labelElapsedTime;
     }
 }

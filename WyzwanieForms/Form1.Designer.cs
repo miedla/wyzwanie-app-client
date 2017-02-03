@@ -49,6 +49,8 @@
             this.columnFrom = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonPlay = new System.Windows.Forms.Button();
             this.timerWaitForPlayers = new System.Windows.Forms.Timer(this.components);
+            this.comboBoxRoomPlayers = new System.Windows.Forms.ComboBox();
+            this.labelRoomPlayers = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonServerConnect
@@ -63,7 +65,7 @@
             // 
             // textBoxMessage
             // 
-            this.textBoxMessage.Location = new System.Drawing.Point(89, 90);
+            this.textBoxMessage.Location = new System.Drawing.Point(89, 111);
             this.textBoxMessage.Name = "textBoxMessage";
             this.textBoxMessage.Size = new System.Drawing.Size(115, 20);
             this.textBoxMessage.TabIndex = 1;
@@ -128,7 +130,7 @@
             // labelMessage
             // 
             this.labelMessage.AutoSize = true;
-            this.labelMessage.Location = new System.Drawing.Point(26, 93);
+            this.labelMessage.Location = new System.Drawing.Point(26, 114);
             this.labelMessage.Name = "labelMessage";
             this.labelMessage.Size = new System.Drawing.Size(50, 13);
             this.labelMessage.TabIndex = 8;
@@ -210,11 +212,39 @@
             this.buttonPlay.UseVisualStyleBackColor = true;
             this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
             // 
+            // comboBoxRoomPlayers
+            // 
+            this.comboBoxRoomPlayers.FormattingEnabled = true;
+            this.comboBoxRoomPlayers.Items.AddRange(new object[] {
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"});
+            this.comboBoxRoomPlayers.Location = new System.Drawing.Point(122, 65);
+            this.comboBoxRoomPlayers.Name = "comboBoxRoomPlayers";
+            this.comboBoxRoomPlayers.Size = new System.Drawing.Size(53, 21);
+            this.comboBoxRoomPlayers.TabIndex = 16;
+            // 
+            // labelRoomPlayers
+            // 
+            this.labelRoomPlayers.AutoSize = true;
+            this.labelRoomPlayers.Location = new System.Drawing.Point(26, 68);
+            this.labelRoomPlayers.Name = "labelRoomPlayers";
+            this.labelRoomPlayers.Size = new System.Drawing.Size(90, 13);
+            this.labelRoomPlayers.TabIndex = 17;
+            this.labelRoomPlayers.Text = "Required Players:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(769, 277);
+            this.Controls.Add(this.labelRoomPlayers);
+            this.Controls.Add(this.comboBoxRoomPlayers);
             this.Controls.Add(this.buttonPlay);
             this.Controls.Add(this.listViewMessages);
             this.Controls.Add(this.labelRoomList);
@@ -259,6 +289,8 @@
         private System.Windows.Forms.ColumnHeader columnFrom;
         private System.Windows.Forms.Button buttonPlay;
         private System.Windows.Forms.Timer timerWaitForPlayers;
+        private System.Windows.Forms.ComboBox comboBoxRoomPlayers;
+        private System.Windows.Forms.Label labelRoomPlayers;
     }
 }
 

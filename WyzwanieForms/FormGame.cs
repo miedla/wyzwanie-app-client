@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Quobject.SocketIoClientDotNet.Client;
+using System.Diagnostics;
 
 namespace WyzwanieForms
 {
@@ -15,12 +16,15 @@ namespace WyzwanieForms
     {
         private Socket socket;
         private Form1 menu;
-
         private List<Question> questionList;
         private Question currentQuestion;
         private char answer;
         private float score = 0f;
-        private int currentNumber = 1;
+        private int currentNumber = 0;
+        private System.Timers.Timer timer;
+        private DateTime startTime;
+        private int timeForQuestion = 30;
+
         public FormGame(List<Question> questionList, Socket socket, Form1 menu)
         {
             InitializeComponent();
@@ -31,8 +35,9 @@ namespace WyzwanieForms
             this.FormClosed += FormGame_Closing;
             currentQuestion = questionList.First();
             labelScore.Text = score.ToString();
+            timer = new System.Timers.Timer();
 
-            DisplayQuestion();
+            NextQuestion();
         }
 
         private void FormGame_FormClosed(object sender, FormClosedEventArgs e)
@@ -66,18 +71,31 @@ namespace WyzwanieForms
                 labelScore.Text = score.ToString();
             }
 
-            currentNumber += 1;
-            labelQuestionNumber.Text = currentNumber.ToString();
+            NextQuestion();
+        }
 
+        private void NextQuestion()
+        {
+            setTimer();
+
+            currentNumber += 1;
+            if (this.IsHandleCreated)
+            {
+                labelQuestionNumber.BeginInvoke(new Action(() =>
+                {
+                    labelQuestionNumber.Text = currentNumber.ToString();
+                }));
+            }
             if (currentNumber <= questionList.Count)
             {
                 currentQuestion = questionList[currentNumber - 1];
                 DisplayQuestion();
-            }else
+            }
+            else
             {
                 DialogResult dr = MessageBox.Show("Quiz finished! Your score: " + score, "Congratulations!", MessageBoxButtons.OK);
 
-                if(dr == DialogResult.OK)
+                if (dr == DialogResult.OK)
                 {
                     socket.Emit("playerexitedgame");
                     this.Close();
@@ -87,13 +105,67 @@ namespace WyzwanieForms
 
         private void DisplayQuestion()
         {
-            labelQuestion.Text = currentQuestion.QuestionName;
-            buttonA.Text = currentQuestion.Answers['a'];
-            buttonB.Text = currentQuestion.Answers['b'];
-            buttonC.Text = currentQuestion.Answers['c'];
-            buttonD.Text = currentQuestion.Answers['d'];
+            if (this.IsHandleCreated)
+            {
+                labelQuestion.BeginInvoke(new Action(() =>
+                {
+                    labelQuestion.Text = currentQuestion.QuestionName;
+                }));
+
+                buttonA.BeginInvoke(new Action(() =>
+                {
+                    buttonA.Text = currentQuestion.Answers['a'];
+                }));
+
+                buttonB.BeginInvoke(new Action(() =>
+                {
+                    buttonB.Text = currentQuestion.Answers['b'];
+                }));
+
+                buttonC.BeginInvoke(new Action(() =>
+                {
+                    buttonC.Text = currentQuestion.Answers['c'];
+                }));
+
+                buttonD.BeginInvoke(new Action(() =>
+                {
+                    buttonD.Text = currentQuestion.Answers['d'];
+                }));
+            }
+            //buttonB.Text = currentQuestion.Answers['b'];
+            //buttonC.Text = currentQuestion.Answers['c'];
+            //buttonD.Text = currentQuestion.Answers['d'];
 
             answer = currentQuestion.Correct;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            int elapsedSeconds = (int)(DateTime.Now - startTime).TotalSeconds;
+            int remainingSeconds = timeForQuestion - elapsedSeconds;
+            Debug.WriteLine("FORM GAME, remainingSeconds: " + remainingSeconds);
+            if (this.IsHandleCreated)
+            {
+                labelQTime.BeginInvoke(new Action(() =>
+                {
+                    labelQTime.Text = remainingSeconds.ToString();
+                }));
+            }
+
+            if (remainingSeconds <= 0)
+            {
+                timer.Stop();
+                NextQuestion();
+            }
+        }
+
+        private void setTimer()
+        {
+            Debug.WriteLine("FORM GAME, setTimer(): ");
+            timer.Interval = 500;
+            timer.Elapsed += Timer_Tick;
+            timer.Start();
+            startTime = DateTime.Now;
         }
 
         private void FormGame_Closing(object sender, FormClosedEventArgs e)
@@ -104,7 +176,6 @@ namespace WyzwanieForms
                 menu.Cursor = Cursors.Default;
                 menu.GetSocket.Emit("playerexitedgame");
             }));
-            //socket.Emit("playerexitedgame");
         }
     }
 }

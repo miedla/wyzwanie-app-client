@@ -60,11 +60,10 @@ namespace WyzwanieForms
                         form1.Enabled = true;
                     }));
 
-                    FormGame gf = new FormGame(form1.questionList, socket, form1);
-
                     if (this.IsHandleCreated)
                     {
-                        BeginInvoke(new Action(() =>
+                        FormGame gf = new FormGame(form1.questionList, socket, form1);
+                        this.Invoke(new Action(() =>
                         {
                             gf.Show();
                             this.Close();
@@ -88,7 +87,10 @@ namespace WyzwanieForms
                 if (playersCount == form1.requiredPlayersQuantity)
                 {
                     this.Close();
-                    new FormGame(form1.questionList, socket, form1).Show();
+
+                    FormGame fg = new FormGame(form1.questionList, socket, form1);
+                    fg.Show();
+                    //new FormGame(form1.questionList, socket, form1).Show();
                 }
                 else
                 {

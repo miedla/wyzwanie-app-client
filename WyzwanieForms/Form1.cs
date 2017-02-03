@@ -101,6 +101,8 @@ namespace WyzwanieForms
             client.BaseAddress = new Uri("http://localhost:5000/");
             //client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            comboBoxRoomPlayers.SelectedIndex = 0;
         }
 
         private async void buttonPlay_Click(object sender, EventArgs e)
@@ -292,6 +294,7 @@ namespace WyzwanieForms
 
         private void CreateRoom_Click(object sender, System.EventArgs e)
         {
+            requiredPlayersQuantity = int.Parse(comboBoxRoomPlayers.SelectedItem.ToString());
             socket.Emit("create", textBoxRoomName.Text);
         }
 

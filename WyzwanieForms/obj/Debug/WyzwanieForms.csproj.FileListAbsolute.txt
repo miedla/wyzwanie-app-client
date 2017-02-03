@@ -24,7 +24,6 @@ D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\bin\Debug\Newtonsoft.Js
 D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\bin\Debug\SocketIoClientDotNet.dll
 D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\bin\Debug\WebSocket4Net.dll
 D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\bin\Debug\Newtonsoft.Json.xml
-D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms.csprojResolveAssemblyReference.cache
 D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms.Form1.resources
 D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms.FormGame.resources
 D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms.Properties.Resources.resources
