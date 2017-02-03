@@ -44,10 +44,13 @@ namespace WyzwanieForms
                 playersCount = int.Parse(jo.GetValue("usersQ").ToString());
                 //Debug.WriteLine("playersCount: "+ rjo.GetValue("active").ToString());
                 Debug.WriteLine("room jo: " + jo.ToString());
-                labelPlayersCount.BeginInvoke(new Action(() =>
+                if (!this.IsDisposed)
                 {
-                    labelPlayersCount.Text = playersCount.ToString();
-                }));
+                    labelPlayersCount.BeginInvoke(new Action(() =>
+                    {
+                        labelPlayersCount.Text = playersCount.ToString();
+                    }));
+                }
 
                 if (playersCount == form1.requiredPlayersQuantity)
                 {
@@ -57,8 +60,16 @@ namespace WyzwanieForms
                         form1.Enabled = true;
                     }));
 
-                    this.Close();
-                    new FormGame(form1.questionList, socket).Show();
+                    FormGame gf = new FormGame(form1.questionList, socket, form1);
+
+                    if (this.IsHandleCreated)
+                    {
+                        BeginInvoke(new Action(() =>
+                        {
+                            gf.Show();
+                            this.Close();
+                        }));
+                    }
                 }
             });
         }
@@ -77,7 +88,7 @@ namespace WyzwanieForms
                 if (playersCount == form1.requiredPlayersQuantity)
                 {
                     this.Close();
-                    new FormGame(form1.questionList, socket).Show();
+                    new FormGame(form1.questionList, socket, form1).Show();
                 }
                 else
                 {

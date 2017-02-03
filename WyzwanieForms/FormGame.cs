@@ -14,22 +14,30 @@ namespace WyzwanieForms
     public partial class FormGame : Form
     {
         private Socket socket;
+        private Form1 menu;
 
         private List<Question> questionList;
         private Question currentQuestion;
         private char answer;
         private float score = 0f;
         private int currentNumber = 1;
-        public FormGame(List<Question> questionList, Socket socket)
+        public FormGame(List<Question> questionList, Socket socket, Form1 menu)
         {
             InitializeComponent();
 
+            this.menu = menu;
             this.socket = socket;
             this.questionList = questionList;
+            this.FormClosed += FormGame_Closing;
             currentQuestion = questionList.First();
             labelScore.Text = score.ToString();
 
             DisplayQuestion();
+        }
+
+        private void FormGame_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void buttonAnswer_Click(object sender, EventArgs e)
@@ -90,7 +98,13 @@ namespace WyzwanieForms
 
         private void FormGame_Closing(object sender, FormClosedEventArgs e)
         {
-            socket.Emit("playerexitedgame");
+            //menu.Cursor = Cursors.Default;
+            menu.Invoke(new Action(() =>
+            {
+                menu.Cursor = Cursors.Default;
+                menu.GetSocket.Emit("playerexitedgame");
+            }));
+            //socket.Emit("playerexitedgame");
         }
     }
 }

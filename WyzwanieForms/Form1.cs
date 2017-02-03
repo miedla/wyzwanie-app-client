@@ -28,6 +28,16 @@ namespace WyzwanieForms
         public List<Question> questionList = new List<Question>();
         public WaitingForm waitingForm;
 
+        public Socket GetSocket
+        {
+            get { return socket; }
+        }
+
+        //public Button GetButtonPlay
+        //{
+        //    get { return buttonPlay; }
+        //}
+
         static async Task<List<Question>> GetQuestionsAsync(string path)
         {
             List<Question> questions = new List<Question>();
@@ -115,19 +125,13 @@ namespace WyzwanieForms
                 buttonPlay.Enabled = false;
 
                 string jsonQuestionList = JsonConvert.SerializeObject(questionList);
-
+                Debug.WriteLine("gamestarted, jsonQList: " + jsonQuestionList);
                 socket.Emit("gamestarted", jsonQuestionList);
             }
             catch(Exception ex)
             {
                 Debug.WriteLine("Error: "+ex.ToString());
             }
-            //Debug.WriteLine("before async");
-            //RunAsync().Wait();
-            //Debug.WriteLine("after async");
-            //new FormGame(questionList).Show();
-            //FormGame fg = new FormGame();
-            //fg.Show();
         }
 
         private void buttonConnectToServer_Click(object sender, System.EventArgs e)
@@ -244,7 +248,7 @@ namespace WyzwanieForms
                     Invoke(new Action(() =>
                     {
                         socket.Emit("playerjoinedgame");
-                        new FormGame(questionList, socket).Show();
+                        new FormGame(questionList, socket, this).Show();
                     }));
                     
                 }
@@ -261,8 +265,9 @@ namespace WyzwanieForms
             socket.On("updategame", (data) =>
             {
                 JObject jo = JObject.Parse(data.ToString());
-                Debug.WriteLine("room jo: " + jo.ToString());                
-                
+                Debug.WriteLine("room jo: " + jo.ToString());
+                Debug.WriteLine("room active: " + bool.Parse(jo.GetValue("active").ToString()));
+
                 if (!bool.Parse(jo.GetValue("active").ToString()))
                 {
                     buttonPlay.Invoke(new Action(() =>
