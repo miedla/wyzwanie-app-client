@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Quobject.SocketIoClientDotNet.Client;
 using System.Diagnostics;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace WyzwanieForms
 {
@@ -38,6 +40,32 @@ namespace WyzwanieForms
             timer = new System.Timers.Timer();
 
             NextQuestion();
+
+            socket.On("playersscore", (data) =>
+            {
+                if (!dataGridViewScores.InvokeRequired)
+                {
+                    dataGridViewScores.Rows.Clear();
+                    dataGridViewScores.Refresh();
+                }
+                else
+                {
+                    dataGridViewScores.BeginInvoke(new Action(() =>
+                    {
+                        dataGridViewScores.Rows.Clear();
+                        dataGridViewScores.Refresh();
+                    }));
+                }
+
+                JArray scoresArray = JArray.Parse(data.ToString());
+                foreach(JObject ps in scoresArray)
+                {
+                    string playerName = ps.GetValue("name").ToString();
+                    int playerScore = int.Parse(ps.GetValue("score").ToString());
+                    setScores(playerName, playerScore);
+                }
+                Debug.WriteLine("playersscore, data: "+data);
+            });
         }
 
         private void buttonAnswer_Click(object sender, EventArgs e)
@@ -66,6 +94,7 @@ namespace WyzwanieForms
                 labelScore.Text = score.ToString();
             }
 
+            socket.Emit("updatescore", score);
             NextQuestion();
         }
 
@@ -103,14 +132,6 @@ namespace WyzwanieForms
                         this.Close();
                     }));
                 }
-                
-                //DialogResult dr = MessageBox.Show("Quiz finished! Your score: " + score, "Waiting for rest players finish...", MessageBoxButtons.OK);
-
-                //if (dr == DialogResult.OK)
-                //{
-                //    socket.Emit("playerexitedgame");
-                //    this.Close();
-                //}
             }
         }
 
@@ -143,9 +164,6 @@ namespace WyzwanieForms
                     buttonD.Text = currentQuestion.Answers['d'];
                 }));
             }
-            //buttonB.Text = currentQuestion.Answers['b'];
-            //buttonC.Text = currentQuestion.Answers['c'];
-            //buttonD.Text = currentQuestion.Answers['d'];
 
             answer = currentQuestion.Correct;
         }
@@ -177,6 +195,23 @@ namespace WyzwanieForms
             timer.Elapsed += Timer_Tick;
             timer.Start();
             startTime = DateTime.Now;
+        }
+
+        private void setScores(string playerName, int playerScore)
+        {
+            if (!dataGridViewScores.InvokeRequired)
+            {
+                dataGridViewScores.Rows.Add(playerName, playerScore);
+                dataGridViewScores.Refresh();
+            }
+            else
+            {
+                dataGridViewScores.BeginInvoke(new Action(() =>
+                {
+                    dataGridViewScores.Rows.Add(playerName, playerScore);
+                    dataGridViewScores.Update();
+                }));
+            }
         }
 
         private void FormGame_Closing(object sender, FormClosedEventArgs e)

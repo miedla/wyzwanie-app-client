@@ -38,12 +38,16 @@
             this.labelScoreName = new System.Windows.Forms.Label();
             this.labelQTime = new System.Windows.Forms.Label();
             this.labelElapsedTime = new System.Windows.Forms.Label();
+            this.dataGridViewScores = new System.Windows.Forms.DataGridView();
+            this.ColumnPlayer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewScores)).BeginInit();
             this.SuspendLayout();
             // 
             // labelQuestion
             // 
             this.labelQuestion.AutoSize = true;
-            this.labelQuestion.Location = new System.Drawing.Point(57, 46);
+            this.labelQuestion.Location = new System.Drawing.Point(196, 45);
             this.labelQuestion.MaximumSize = new System.Drawing.Size(200, 60);
             this.labelQuestion.MinimumSize = new System.Drawing.Size(0, 60);
             this.labelQuestion.Name = "labelQuestion";
@@ -53,7 +57,7 @@
             // 
             // buttonA
             // 
-            this.buttonA.Location = new System.Drawing.Point(49, 111);
+            this.buttonA.Location = new System.Drawing.Point(188, 110);
             this.buttonA.Name = "buttonA";
             this.buttonA.Size = new System.Drawing.Size(200, 60);
             this.buttonA.TabIndex = 1;
@@ -63,7 +67,7 @@
             // 
             // buttonB
             // 
-            this.buttonB.Location = new System.Drawing.Point(49, 177);
+            this.buttonB.Location = new System.Drawing.Point(188, 176);
             this.buttonB.Name = "buttonB";
             this.buttonB.Size = new System.Drawing.Size(200, 60);
             this.buttonB.TabIndex = 2;
@@ -73,7 +77,7 @@
             // 
             // buttonC
             // 
-            this.buttonC.Location = new System.Drawing.Point(49, 243);
+            this.buttonC.Location = new System.Drawing.Point(188, 242);
             this.buttonC.Name = "buttonC";
             this.buttonC.Size = new System.Drawing.Size(200, 60);
             this.buttonC.TabIndex = 3;
@@ -83,7 +87,7 @@
             // 
             // buttonD
             // 
-            this.buttonD.Location = new System.Drawing.Point(49, 309);
+            this.buttonD.Location = new System.Drawing.Point(188, 308);
             this.buttonD.Name = "buttonD";
             this.buttonD.Size = new System.Drawing.Size(200, 60);
             this.buttonD.TabIndex = 4;
@@ -95,7 +99,7 @@
             // labelQuestionNumber
             // 
             this.labelQuestionNumber.AutoSize = true;
-            this.labelQuestionNumber.Location = new System.Drawing.Point(132, 382);
+            this.labelQuestionNumber.Location = new System.Drawing.Point(271, 381);
             this.labelQuestionNumber.Name = "labelQuestionNumber";
             this.labelQuestionNumber.Size = new System.Drawing.Size(30, 13);
             this.labelQuestionNumber.TabIndex = 5;
@@ -122,7 +126,7 @@
             // labelQTime
             // 
             this.labelQTime.AutoSize = true;
-            this.labelQTime.Location = new System.Drawing.Point(136, 9);
+            this.labelQTime.Location = new System.Drawing.Point(275, 8);
             this.labelQTime.Name = "labelQTime";
             this.labelQTime.Size = new System.Drawing.Size(26, 13);
             this.labelQTime.TabIndex = 8;
@@ -131,17 +135,43 @@
             // labelElapsedTime
             // 
             this.labelElapsedTime.AutoSize = true;
-            this.labelElapsedTime.Location = new System.Drawing.Point(66, 8);
+            this.labelElapsedTime.Location = new System.Drawing.Point(205, 7);
             this.labelElapsedTime.Name = "labelElapsedTime";
             this.labelElapsedTime.Size = new System.Drawing.Size(70, 13);
             this.labelElapsedTime.TabIndex = 9;
             this.labelElapsedTime.Text = "Elapsed time:";
             // 
+            // dataGridViewScores
+            // 
+            this.dataGridViewScores.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.dataGridViewScores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewScores.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnPlayer,
+            this.ColumnScore});
+            this.dataGridViewScores.Location = new System.Drawing.Point(16, 45);
+            this.dataGridViewScores.Name = "dataGridViewScores";
+            this.dataGridViewScores.RowHeadersVisible = false;
+            this.dataGridViewScores.Size = new System.Drawing.Size(124, 323);
+            this.dataGridViewScores.TabIndex = 10;
+            // 
+            // ColumnPlayer
+            // 
+            this.ColumnPlayer.HeaderText = "Player";
+            this.ColumnPlayer.Name = "ColumnPlayer";
+            this.ColumnPlayer.Width = 80;
+            // 
+            // ColumnScore
+            // 
+            this.ColumnScore.HeaderText = "Score";
+            this.ColumnScore.Name = "ColumnScore";
+            this.ColumnScore.Width = 40;
+            // 
             // FormGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 404);
+            this.ClientSize = new System.Drawing.Size(400, 404);
+            this.Controls.Add(this.dataGridViewScores);
             this.Controls.Add(this.labelElapsedTime);
             this.Controls.Add(this.labelQTime);
             this.Controls.Add(this.labelScoreName);
@@ -154,6 +184,7 @@
             this.Controls.Add(this.labelQuestion);
             this.Name = "FormGame";
             this.Text = "FormGame";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewScores)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,5 +202,8 @@
         private System.Windows.Forms.Label labelScoreName;
         private System.Windows.Forms.Label labelQTime;
         private System.Windows.Forms.Label labelElapsedTime;
+        private System.Windows.Forms.DataGridView dataGridViewScores;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnPlayer;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnScore;
     }
 }
