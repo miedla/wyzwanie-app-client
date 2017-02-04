@@ -23,7 +23,7 @@ namespace WyzwanieForms
         private int currentNumber = 0;
         private System.Timers.Timer timer;
         private DateTime startTime;
-        private int timeForQuestion = 30;
+        private int timeForQuestion = 10;
 
         public FormGame(List<Question> questionList, Socket socket, Form1 menu)
         {
@@ -38,11 +38,6 @@ namespace WyzwanieForms
             timer = new System.Timers.Timer();
 
             NextQuestion();
-        }
-
-        private void FormGame_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void buttonAnswer_Click(object sender, EventArgs e)
@@ -93,13 +88,29 @@ namespace WyzwanieForms
             }
             else
             {
-                DialogResult dr = MessageBox.Show("Quiz finished! Your score: " + score, "Congratulations!", MessageBoxButtons.OK);
+                string playerScoreInfo = "Quiz finished! Your score: " + score;
+                new WaitingForm(menu, socket, playerScoreInfo, timeForQuestion).Show();
 
-                if (dr == DialogResult.OK)
+                socket.Emit("playerexitedgame");
+                if (!this.InvokeRequired)
                 {
-                    socket.Emit("playerexitedgame");
                     this.Close();
                 }
+                else
+                {
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        this.Close();
+                    }));
+                }
+                
+                //DialogResult dr = MessageBox.Show("Quiz finished! Your score: " + score, "Waiting for rest players finish...", MessageBoxButtons.OK);
+
+                //if (dr == DialogResult.OK)
+                //{
+                //    socket.Emit("playerexitedgame");
+                //    this.Close();
+                //}
             }
         }
 
@@ -143,7 +154,7 @@ namespace WyzwanieForms
         {
             int elapsedSeconds = (int)(DateTime.Now - startTime).TotalSeconds;
             int remainingSeconds = timeForQuestion - elapsedSeconds;
-            Debug.WriteLine("FORM GAME, remainingSeconds: " + remainingSeconds);
+            //Debug.WriteLine("FORM GAME, remainingSeconds: " + remainingSeconds);
             if (this.IsHandleCreated)
             {
                 labelQTime.BeginInvoke(new Action(() =>

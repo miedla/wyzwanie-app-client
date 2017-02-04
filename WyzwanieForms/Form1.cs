@@ -33,10 +33,10 @@ namespace WyzwanieForms
             get { return socket; }
         }
 
-        //public Button GetButtonPlay
-        //{
-        //    get { return buttonPlay; }
-        //}
+        public Button GetButtonPlay
+        {
+            get { return buttonPlay; }
+        }
 
         static async Task<List<Question>> GetQuestionsAsync(string path)
         {
@@ -111,6 +111,7 @@ namespace WyzwanieForms
             {
                 this.Enabled = false;
                 this.Cursor = Cursors.WaitCursor;
+                requiredPlayersQuantity = int.Parse(comboBoxRoomPlayers.SelectedItem.ToString());
                 waitingForm = new WaitingForm(this, socket);
                 waitingForm.Show();
 
@@ -128,7 +129,11 @@ namespace WyzwanieForms
 
                 string jsonQuestionList = JsonConvert.SerializeObject(questionList);
                 Debug.WriteLine("gamestarted, jsonQList: " + jsonQuestionList);
-                socket.Emit("gamestarted", jsonQuestionList);
+                JObject jo = new JObject();
+                jo.Add("questions", jsonQuestionList);
+                jo.Add("requiredPlayers", requiredPlayersQuantity);
+                //socket.Emit("gamestarted", jsonQuestionList);
+                socket.Emit("gamestarted", jo);
             }
             catch(Exception ex)
             {
@@ -227,7 +232,10 @@ namespace WyzwanieForms
             socket.On("gameinvite", (data) =>
             {
                 JObject jo = JObject.Parse(data.ToString());
-                JArray jarray = JArray.Parse(jo.GetValue("questions").ToString());
+                Debug.WriteLine("gameinvite data: "+data.ToString());
+                JObject qObj = JObject.Parse(jo.GetValue("questions").ToString());//int.Parse(jo.GetValue("requiredPlayers").ToString());
+                requiredPlayersQuantity = int.Parse(qObj.GetValue("requiredPlayers").ToString());
+                JArray jarray = JArray.Parse(qObj.GetValue("questions").ToString());
 
                 foreach(JObject o in jarray)
                 {
@@ -250,7 +258,8 @@ namespace WyzwanieForms
                     Invoke(new Action(() =>
                     {
                         socket.Emit("playerjoinedgame");
-                        new FormGame(questionList, socket, this).Show();
+                        new WaitingForm(this, socket, "Waiting for rest players...").Show();
+                        //new FormGame(questionList, socket, this).Show();
                     }));
                     
                 }
@@ -266,7 +275,7 @@ namespace WyzwanieForms
 
             socket.On("updategame", (data) =>
             {
-                JObject jo = JObject.Parse(data.ToString());
+                JObject jo = JObject.Parse(data.ToString());//blad z serwera nie przychodzi jak player (ten drugi) sie zdiskonektuje
                 Debug.WriteLine("room jo: " + jo.ToString());
                 Debug.WriteLine("room active: " + bool.Parse(jo.GetValue("active").ToString()));
 
@@ -294,7 +303,6 @@ namespace WyzwanieForms
 
         private void CreateRoom_Click(object sender, System.EventArgs e)
         {
-            requiredPlayersQuantity = int.Parse(comboBoxRoomPlayers.SelectedItem.ToString());
             socket.Emit("create", textBoxRoomName.Text);
         }
 

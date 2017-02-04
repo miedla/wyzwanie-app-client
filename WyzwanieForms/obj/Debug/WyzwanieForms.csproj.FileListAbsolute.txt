@@ -29,3 +29,4 @@ D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms
 D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms.Properties.Resources.resources
 D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms.WaitingForm.resources
 D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms.csproj.GenerateResource.Cache
+D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms.csprojResolveAssemblyReference.cache

@@ -19,23 +19,19 @@ namespace WyzwanieForms
         private Form1 form1;
         private Socket socket;
         private Timer timer;
-        private int waitingSeconds = 10;
+        private int waitingSeconds;// = 10;
         private DateTime startTime;
+        private string labelWaitInfoText;
+        private bool gameStarted;
         public int playersCount = 0;
+        private string noEnoughPlayersInfo = "Unfortunately, there's no enought players to play the game.";
 
         public WaitingForm(Form1 form1, Socket socket)
         {
             InitializeComponent();
-            this.form1 = form1;
-            this.socket = socket;
-
-            this.Enabled = false;
-
-            timer = new Timer();
-            timer.Interval = 500;
-            timer.Tick += new EventHandler(Timer_Tick);
-            timer.Start();
-            startTime = DateTime.Now;
+            labelWaitInfoText = noEnoughPlayersInfo;
+            gameStarted = true;
+            InitializeWaitingForm(10, form1, socket);
 
             socket.On("updategame", (data) =>
             {
@@ -48,7 +44,7 @@ namespace WyzwanieForms
                 {
                     labelPlayersCount.BeginInvoke(new Action(() =>
                     {
-                        labelPlayersCount.Text = playersCount.ToString();
+                        labelPlayersCount.Text = playersCount.ToString() + "/" + form1.requiredPlayersQuantity;
                     }));
                 }
 
@@ -62,6 +58,8 @@ namespace WyzwanieForms
 
                     if (this.IsHandleCreated)
                     {
+                        Debug.WriteLine("WaitingForm, playersCount == form1.requiredPlayersQuantity");
+                        socket.Emit("requiredplayersforquiz");
                         FormGame gf = new FormGame(form1.questionList, socket, form1);
                         this.Invoke(new Action(() =>
                         {
@@ -73,6 +71,97 @@ namespace WyzwanieForms
             });
         }
 
+        public WaitingForm(Form1 form1, Socket socket, string labelWaitInfoText, int waitingTime)
+        {
+            InitializeComponent();
+            this.labelWaitInfoText = labelWaitInfoText;//"All players finished their quiz";
+            gameStarted = false;
+            InitializeWaitingForm(waitingTime, form1, socket);
+        }
+
+        public WaitingForm(Form1 form1, Socket socket, string labelWaitInfoText)
+        {
+            InitializeComponent();
+            this.labelWaitInfoText = labelWaitInfoText;
+            InitializeWaitingForm(0, form1, socket);
+            labelWaitingSeconds.Visible = false;
+
+            socket.On("quizstarted", () =>
+            {
+                Debug.WriteLine("quizstarted");
+                FormGame fg = new FormGame(form1.questionList, socket, form1);
+                if (!this.InvokeRequired)
+                {
+                    fg.Show();
+                    this.Close();
+                }
+                else
+                {
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        fg.Show();
+                        this.Close();
+                    }));
+                }
+
+            });
+
+            socket.On("updategame", (data) =>
+            {
+                JObject jo = JObject.Parse(data.ToString());
+                playersCount = int.Parse(jo.GetValue("usersQ").ToString());
+
+                if (!this.IsDisposed)
+                {
+                    labelPlayersCount.BeginInvoke(new Action(() =>
+                    {
+                        labelPlayersCount.Text = playersCount.ToString() + "/" + form1.requiredPlayersQuantity;
+                    }));
+                }
+            });
+
+            socket.On("quizfinished", () =>
+            {
+
+                labelWaitInfo.BeginInvoke(new Action(() =>
+                {
+                    labelWaitInfo.Text = noEnoughPlayersInfo;
+                }));
+
+                if (!this.InvokeRequired)
+                {
+                    this.Enabled = true;
+                    form1.GetButtonPlay.Enabled = true;
+                }
+                else
+                {
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        this.Enabled = true;
+                        form1.GetButtonPlay.Enabled = true;
+                    }));
+                }
+            });
+
+        }
+
+        private void InitializeWaitingForm(int waitingSeconds, Form1 form1, Socket socket)
+        {
+            this.form1 = form1;
+            this.socket = socket;
+            this.waitingSeconds = waitingSeconds;
+            this.Enabled = false;
+
+            if (waitingSeconds != 0)
+            {
+                timer = new Timer();
+                timer.Interval = 500;
+                timer.Tick += new EventHandler(Timer_Tick);
+                timer.Start();
+                startTime = DateTime.Now;
+            }
+        }
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             int elapsedSeconds = (int)(DateTime.Now - startTime).TotalSeconds;
@@ -82,35 +171,40 @@ namespace WyzwanieForms
             {
                 timer.Stop();
                 form1.Enabled = true;
-                Debug.WriteLine("timer.Interval: " + timer.Interval);
 
-                if (playersCount == form1.requiredPlayersQuantity)
+                if (gameStarted)
                 {
-                    this.Close();
-
-                    FormGame fg = new FormGame(form1.questionList, socket, form1);
-                    fg.Show();
-                    //new FormGame(form1.questionList, socket, form1).Show();
-                }
-                else
-                {
-                    labelWaitInfo.Text = "Unfortunately, there's no enought players to play game.";
-                    this.Enabled = true;
-
-                    socket.Emit("gamefinished");
+                    if (playersCount == form1.requiredPlayersQuantity)
+                    {
+                        Debug.WriteLine("WaitingForm, playersCount == form1.requiredPlayersQuantity");
+                        socket.Emit("requiredplayersforquiz");
+                        FormGame fg = new FormGame(form1.questionList, socket, form1);
+                        fg.Show();
+                        this.Close();
+                    }
+                    else
+                    {
+                        labelWaitInfo.Text = labelWaitInfoText;
+                        this.Enabled = true;
+                        form1.GetButtonPlay.Enabled = true;
+                        socket.Emit("gamefinished");
+                    }
                 }
 
                 form1.Cursor = Cursors.Default;
                 labelSeconds.Visible = false;
             }
 
-            labelSeconds.Invoke(new Action(() =>
+            if (this.IsHandleCreated)
             {
-                if (!labelSeconds.IsDisposed)
+                labelSeconds.Invoke(new Action(() =>
                 {
-                    labelSeconds.Text = remainingSeconds.ToString();
-                }
-            }));
+                    if (!labelSeconds.IsDisposed)
+                    {
+                        labelSeconds.Text = remainingSeconds.ToString();
+                    }
+                }));
+            }
         }
 
         private void OkButton_Click(object sender, EventArgs e)

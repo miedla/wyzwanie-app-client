@@ -32,7 +32,7 @@
             this.labelPlayersCount = new System.Windows.Forms.Label();
             this.buttonOk = new System.Windows.Forms.Button();
             this.labelSeconds = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelWaitingSeconds = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -72,14 +72,14 @@
             this.labelSeconds.Size = new System.Drawing.Size(0, 13);
             this.labelSeconds.TabIndex = 4;
             // 
-            // label1
+            // labelWaitingSeconds
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(75, 43);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Waiting seconds:";
+            this.labelWaitingSeconds.AutoSize = true;
+            this.labelWaitingSeconds.Location = new System.Drawing.Point(75, 54);
+            this.labelWaitingSeconds.Name = "labelWaitingSeconds";
+            this.labelWaitingSeconds.Size = new System.Drawing.Size(89, 13);
+            this.labelWaitingSeconds.TabIndex = 5;
+            this.labelWaitingSeconds.Text = "Waiting seconds:";
             // 
             // label2
             // 
@@ -96,7 +96,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(250, 149);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelWaitingSeconds);
             this.Controls.Add(this.labelSeconds);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.labelPlayersCount);
@@ -113,7 +113,7 @@
         private System.Windows.Forms.Label labelPlayersCount;
         private System.Windows.Forms.Button buttonOk;
         private System.Windows.Forms.Label labelSeconds;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelWaitingSeconds;
         private System.Windows.Forms.Label label2;
     }
 }
