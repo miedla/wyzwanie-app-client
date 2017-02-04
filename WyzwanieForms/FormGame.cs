@@ -26,6 +26,7 @@ namespace WyzwanieForms
         private System.Timers.Timer timer;
         private DateTime startTime;
         private int timeForQuestion = 10;
+        private bool quizFinished = false;
 
         public FormGame(List<Question> questionList, Socket socket, Form1 menu)
         {
@@ -62,7 +63,10 @@ namespace WyzwanieForms
                 {
                     string playerName = ps.GetValue("name").ToString();
                     int playerScore = int.Parse(ps.GetValue("score").ToString());
-                    setScores(playerName, playerScore);
+                    if (this.IsHandleCreated)
+                    {
+                        setScores(playerName, playerScore);
+                    }
                 }
                 Debug.WriteLine("playersscore, data: "+data);
             });
@@ -100,8 +104,6 @@ namespace WyzwanieForms
 
         private void NextQuestion()
         {
-            setTimer();
-
             currentNumber += 1;
             if (this.IsHandleCreated)
             {
@@ -112,23 +114,27 @@ namespace WyzwanieForms
             }
             if (currentNumber <= questionList.Count)
             {
+                setTimer();
                 currentQuestion = questionList[currentNumber - 1];
                 DisplayQuestion();
             }
             else
             {
-                string playerScoreInfo = "Quiz finished! Your score: " + score;
-                new WaitingForm(menu, socket, playerScoreInfo, timeForQuestion).Show();
+                timer.Stop();
+                timer.Elapsed -= Timer_Tick;
 
+                Debug.WriteLine("FORM GAME TIMER STOPPED");
                 socket.Emit("playerexitedgame");
                 if (!this.InvokeRequired)
                 {
+                    new QuizFinishedForm(socket).Show();
                     this.Close();
                 }
                 else
                 {
-                    this.BeginInvoke(new Action(() =>
+                    this.Invoke(new Action(() =>
                     {
+                        new QuizFinishedForm(socket).Show();
                         this.Close();
                     }));
                 }
@@ -181,10 +187,11 @@ namespace WyzwanieForms
                 }));
             }
 
-            if (remainingSeconds <= 0)
+            if (remainingSeconds == 0 && !quizFinished)
             {
                 timer.Stop();
                 NextQuestion();
+                quizFinished = true;
             }
         }
 
