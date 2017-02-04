@@ -103,6 +103,10 @@ namespace WyzwanieForms
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             comboBoxRoomPlayers.SelectedIndex = 0;
+            buttonServerConnect.Enabled = false;
+            buttonCreateRoom.Enabled = false;
+            buttonPlay.Enabled = false;
+            buttonSend.Enabled = false;
         }
 
         private async void buttonPlay_Click(object sender, EventArgs e)
@@ -194,7 +198,7 @@ namespace WyzwanieForms
                         {
                             if (!listViewConnectedUsers.Items.ContainsKey(usernameList.Last()))
                             {
-                                string[] row = { usernameList.Last(), "0" };
+                                string[] row = { usernameList.Last() };//, "0" };
                                 ListViewItem item = new ListViewItem(row);
                                 listViewConnectedUsers.Items.Add(item);
                                 Debug.WriteLine(listViewConnectedUsers.Items[0].Name);
@@ -287,6 +291,11 @@ namespace WyzwanieForms
                     }));
                 }
             });
+
+            buttonServerConnect.Enabled = false;
+            buttonCreateRoom.Enabled = false;
+            buttonPlay.Enabled = true;
+            buttonSend.Enabled = false;
         }
 
         private void SendMessage_Click(object sender, System.EventArgs e)
@@ -299,6 +308,8 @@ namespace WyzwanieForms
             {
                 socket.Emit("sendpm", textBoxMessage.Text, selectedUser);
             }
+
+            textBoxMessage.Text = "";
         }
 
         private void CreateRoom_Click(object sender, System.EventArgs e)
@@ -326,6 +337,42 @@ namespace WyzwanieForms
 
             selectedUser = listViewConnectedUsers.SelectedItems[0].Text;
             Debug.WriteLine("selected item: "+ selectedUser);
+        }
+
+        private void textBoxName_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBoxName.Text))
+            {
+                buttonServerConnect.Enabled = false;
+            }else
+            {
+                buttonServerConnect.Enabled = true;
+            }
+        }
+
+        private void textBoxRoomName_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBoxName.Text))
+            {
+                buttonCreateRoom.Enabled = false;
+            }
+            else
+            {
+                buttonCreateRoom.Enabled = true;
+            }
+            
+        }
+
+        private void textBoxMessage_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBoxName.Text))
+            {
+                buttonSend.Enabled = false;
+            }
+            else
+            {
+                buttonSend.Enabled = true;
+            }
         }
     }
 }

@@ -67,7 +67,7 @@
             // labelSeconds
             // 
             this.labelSeconds.AutoSize = true;
-            this.labelSeconds.Location = new System.Drawing.Point(168, 43);
+            this.labelSeconds.Location = new System.Drawing.Point(170, 54);
             this.labelSeconds.Name = "labelSeconds";
             this.labelSeconds.Size = new System.Drawing.Size(0, 13);
             this.labelSeconds.TabIndex = 4;

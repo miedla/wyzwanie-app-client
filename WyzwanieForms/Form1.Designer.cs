@@ -35,7 +35,6 @@
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.listViewConnectedUsers = new System.Windows.Forms.ListView();
             this.columnUsername = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnScore = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.labelUsersList = new System.Windows.Forms.Label();
             this.labelName = new System.Windows.Forms.Label();
             this.labelMessage = new System.Windows.Forms.Label();
@@ -69,6 +68,7 @@
             this.textBoxMessage.Name = "textBoxMessage";
             this.textBoxMessage.Size = new System.Drawing.Size(115, 20);
             this.textBoxMessage.TabIndex = 1;
+            this.textBoxMessage.TextChanged += new System.EventHandler(this.textBoxMessage_TextChanged);
             // 
             // buttonSend
             // 
@@ -86,15 +86,15 @@
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(115, 20);
             this.textBoxName.TabIndex = 4;
+            this.textBoxName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
             // 
             // listViewConnectedUsers
             // 
             this.listViewConnectedUsers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnUsername,
-            this.columnScore});
-            this.listViewConnectedUsers.Location = new System.Drawing.Point(592, 27);
+            this.columnUsername});
+            this.listViewConnectedUsers.Location = new System.Drawing.Point(616, 27);
             this.listViewConnectedUsers.Name = "listViewConnectedUsers";
-            this.listViewConnectedUsers.Size = new System.Drawing.Size(152, 222);
+            this.listViewConnectedUsers.Size = new System.Drawing.Size(124, 222);
             this.listViewConnectedUsers.TabIndex = 5;
             this.listViewConnectedUsers.UseCompatibleStateImageBehavior = false;
             this.listViewConnectedUsers.View = System.Windows.Forms.View.Details;
@@ -103,11 +103,7 @@
             // columnUsername
             // 
             this.columnUsername.Text = "Username";
-            this.columnUsername.Width = 80;
-            // 
-            // columnScore
-            // 
-            this.columnScore.Text = "Score";
+            this.columnUsername.Width = 120;
             // 
             // labelUsersList
             // 
@@ -152,6 +148,7 @@
             this.textBoxRoomName.Name = "textBoxRoomName";
             this.textBoxRoomName.Size = new System.Drawing.Size(115, 20);
             this.textBoxRoomName.TabIndex = 10;
+            this.textBoxRoomName.TextChanged += new System.EventHandler(this.textBoxRoomName_TextChanged);
             // 
             // labelRoomName
             // 
@@ -276,7 +273,6 @@
         private System.Windows.Forms.ListView listViewConnectedUsers;
         private System.Windows.Forms.Label labelUsersList;
         private System.Windows.Forms.ColumnHeader columnUsername;
-        private System.Windows.Forms.ColumnHeader columnScore;
         private System.Windows.Forms.Label labelName;
         private System.Windows.Forms.Label labelMessage;
         private System.Windows.Forms.Button buttonCreateRoom;
