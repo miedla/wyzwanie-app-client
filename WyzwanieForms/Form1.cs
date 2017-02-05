@@ -119,16 +119,9 @@ namespace WyzwanieForms
                 waitingForm = new WaitingForm(this, socket);
                 waitingForm.Show();
 
-                //waitingForm.FormClosed += new FormClosedEventHandler((s, e) =>
-                //{
-                //    buttonPlay
-                //});
-
-
+                questionList.Clear();
                 questionList = await GetQuestionsAsync("http://localhost:5000/getQuestions.json");
-
-                //new FormGame(questionList, socket).Show();
-
+                Debug.WriteLine("Form1 questionList GetQuestionsAsync: "+ questionList.Count);
                 buttonPlay.Enabled = false;
 
                 string jsonQuestionList = JsonConvert.SerializeObject(questionList);
@@ -186,10 +179,13 @@ namespace WyzwanieForms
                     JArray jarray = JArray.Parse(data.ToString());
 
                     usernameList = new List<string>();
-                    listViewConnectedUsers.Invoke(new Action(delegate ()
+                    if (this.IsHandleCreated)
                     {
-                        listViewConnectedUsers.Items.Clear();
-                    }));
+                        listViewConnectedUsers.Invoke(new Action(delegate ()
+                        {
+                            listViewConnectedUsers.Items.Clear();
+                        }));
+                    }
 
                     foreach (Object o in jarray)
                     {
@@ -240,8 +236,9 @@ namespace WyzwanieForms
                 JObject qObj = JObject.Parse(jo.GetValue("questions").ToString());//int.Parse(jo.GetValue("requiredPlayers").ToString());
                 requiredPlayersQuantity = int.Parse(qObj.GetValue("requiredPlayers").ToString());
                 JArray jarray = JArray.Parse(qObj.GetValue("questions").ToString());
+                questionList.Clear();
 
-                foreach(JObject o in jarray)
+                foreach (JObject o in jarray)
                 {
                     Debug.WriteLine("gameInvite o: "+o.ToString());
                     string id = o.GetValue("Id").ToString();
@@ -255,22 +252,13 @@ namespace WyzwanieForms
                     questionList.Add(q);
                 }
 
-                DialogResult dr = MessageBox.Show("Username: " + jo.GetValue("from"), " send You Invitation for play game.\nDo You accept his request?", MessageBoxButtons.YesNo);
+                string invMsg = "Username: " + jo.GetValue("from") + " send You Invitation to play the game.\nDo You accept his request?";
 
-                if(dr == DialogResult.Yes)
+                Invoke(new Action(() =>
                 {
-                    Invoke(new Action(() =>
-                    {
-                        socket.Emit("playerjoinedgame");
-                        new WaitingForm(this, socket, "Waiting for rest players...").Show();
-                        //new FormGame(questionList, socket, this).Show();
-                    }));
-                    
-                }
-                if(dr == DialogResult.No)
-                {
+                    new InviteForm(invMsg, socket, this).Show();
+                }));
 
-                }
                 buttonPlay.Invoke(new Action(() =>
                 {
                     buttonPlay.Enabled = false;
@@ -279,7 +267,7 @@ namespace WyzwanieForms
 
             socket.On("updategame", (data) =>
             {
-                JObject jo = JObject.Parse(data.ToString());//blad z serwera nie przychodzi jak player (ten drugi) sie zdiskonektuje
+                JObject jo = JObject.Parse(data.ToString());
                 Debug.WriteLine("room jo: " + jo.ToString());
                 Debug.WriteLine("room active: " + bool.Parse(jo.GetValue("active").ToString()));
 

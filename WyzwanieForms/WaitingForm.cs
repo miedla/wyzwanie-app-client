@@ -71,39 +71,29 @@ namespace WyzwanieForms
             });
         }
 
-        public WaitingForm(Form1 form1, Socket socket, string labelWaitInfoText, int waitingTime)
-        {
-            InitializeComponent();
-            this.labelWaitInfoText = labelWaitInfoText;//"All players finished their quiz";
-            gameStarted = false;
-            InitializeWaitingForm(waitingTime, form1, socket);
-        }
-
         public WaitingForm(Form1 form1, Socket socket, string labelWaitInfoText)
         {
             InitializeComponent();
             this.labelWaitInfoText = labelWaitInfoText;
             InitializeWaitingForm(0, form1, socket);
             labelWaitingSeconds.Visible = false;
+            this.socket = socket;
+            Debug.WriteLine("WaitingForm()");
 
             socket.On("quizstarted", () =>
             {
                 Debug.WriteLine("quizstarted");
-                FormGame fg = new FormGame(form1.questionList, socket, form1);
-                if (!this.InvokeRequired)
+                
+                if (this.IsHandleCreated)
                 {
-                    fg.Show();
-                    this.Close();
-                }
-                else
-                {
-                    this.BeginInvoke(new Action(() =>
+                    this.Invoke(new Action(() =>
                     {
+                        Debug.WriteLine("form1.questionList.Count: "+ form1.questionList.Count);
+                        FormGame fg = new FormGame(form1.questionList, socket, form1);
                         fg.Show();
                         this.Close();
                     }));
                 }
-
             });
 
             socket.On("updategame", (data) =>
@@ -122,22 +112,24 @@ namespace WyzwanieForms
 
             socket.On("quizfinished", () =>
             {
-
-                labelWaitInfo.BeginInvoke(new Action(() =>
+                if (this.IsHandleCreated)
                 {
-                    labelWaitInfo.Text = noEnoughPlayersInfo;
-                }));
+                    labelWaitInfo.BeginInvoke(new Action(() =>
+                    {
+                        labelWaitInfo.Text = noEnoughPlayersInfo;
+                    }));
+                }
 
                 if (!this.InvokeRequired)
                 {
-                    this.Enabled = true;
+                    this.Close();//this.Enabled = true;
                     form1.GetButtonPlay.Enabled = true;
                 }
                 else
                 {
                     this.BeginInvoke(new Action(() =>
                     {
-                        this.Enabled = true;
+                        this.Close();//this.Enabled = true;
                         form1.GetButtonPlay.Enabled = true;
                     }));
                 }

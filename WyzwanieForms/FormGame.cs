@@ -21,7 +21,7 @@ namespace WyzwanieForms
         private List<Question> questionList;
         private Question currentQuestion;
         private char answer;
-        private float score = 0f;
+        private int score = 0;//0f;
         private int currentNumber = 0;
         private System.Timers.Timer timer;
         private DateTime startTime;
@@ -35,27 +35,33 @@ namespace WyzwanieForms
             this.menu = menu;
             this.socket = socket;
             this.questionList = questionList;
+            Debug.WriteLine("questionList.Count: "+ questionList.Count);
             this.FormClosed += FormGame_Closing;
             currentQuestion = questionList.First();
             labelScore.Text = score.ToString();
-            timer = new System.Timers.Timer();
+            score = 0;
+            currentNumber = 0;
+            //timer = new System.Timers.Timer();
 
             NextQuestion();
 
             socket.On("playersscore", (data) =>
             {
-                if (!dataGridViewScores.InvokeRequired)
+                if (this.IsHandleCreated)
                 {
-                    dataGridViewScores.Rows.Clear();
-                    dataGridViewScores.Refresh();
-                }
-                else
-                {
-                    dataGridViewScores.BeginInvoke(new Action(() =>
+                    if (!dataGridViewScores.InvokeRequired)
                     {
                         dataGridViewScores.Rows.Clear();
                         dataGridViewScores.Refresh();
-                    }));
+                    }
+                    else
+                    {
+                        dataGridViewScores.BeginInvoke(new Action(() =>
+                        {
+                            dataGridViewScores.Rows.Clear();
+                            dataGridViewScores.Refresh();
+                        }));
+                    }
                 }
 
                 JArray scoresArray = JArray.Parse(data.ToString());
@@ -67,8 +73,9 @@ namespace WyzwanieForms
                     {
                         setScores(playerName, playerScore);
                     }
+                    Debug.WriteLine("playersscore playername: " + playerName);
                 }
-                Debug.WriteLine("playersscore, data: "+data);
+                //Debug.WriteLine("playersscore, data: "+data);
             });
         }
 
@@ -94,7 +101,7 @@ namespace WyzwanieForms
 
             if (answer.Equals(currentQuestion.Correct))
             {
-                score += 1f;
+                score += 1;
                 labelScore.Text = score.ToString();
             }
 
@@ -104,7 +111,9 @@ namespace WyzwanieForms
 
         private void NextQuestion()
         {
+            //socket.Emit("updatescore", score);
             currentNumber += 1;
+            Debug.WriteLine("currentNumber: "+ currentNumber);
             if (this.IsHandleCreated)
             {
                 labelQuestionNumber.BeginInvoke(new Action(() =>
@@ -125,18 +134,16 @@ namespace WyzwanieForms
 
                 Debug.WriteLine("FORM GAME TIMER STOPPED");
                 socket.Emit("playerexitedgame");
-                if (!this.InvokeRequired)
+                if (this.IsHandleCreated)
                 {
-                    new QuizFinishedForm(socket).Show();
-                    this.Close();
-                }
-                else
-                {
-                    this.Invoke(new Action(() =>
+                    if (!this.IsDisposed)
                     {
-                        new QuizFinishedForm(socket).Show();
-                        this.Close();
-                    }));
+                        this.Invoke(new Action(() =>
+                        {
+                            new QuizFinishedForm(socket).Show();
+                            this.Close();
+                        }));
+                    }
                 }
             }
         }
@@ -198,6 +205,7 @@ namespace WyzwanieForms
         private void setTimer()
         {
             Debug.WriteLine("FORM GAME, setTimer(): ");
+            timer = new System.Timers.Timer();
             timer.Interval = 500;
             timer.Elapsed += Timer_Tick;
             timer.Start();
@@ -223,7 +231,7 @@ namespace WyzwanieForms
 
         private void FormGame_Closing(object sender, FormClosedEventArgs e)
         {
-            //menu.Cursor = Cursors.Default;
+            Debug.WriteLine("FormGame_Closing");
             menu.Invoke(new Action(() =>
             {
                 menu.Cursor = Cursors.Default;

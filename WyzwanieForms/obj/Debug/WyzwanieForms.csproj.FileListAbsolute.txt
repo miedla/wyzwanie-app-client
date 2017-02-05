@@ -31,3 +31,4 @@ D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms
 D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms.csproj.GenerateResource.Cache
 D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms.csprojResolveAssemblyReference.cache
 D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms.QuizFinishedForm.resources
+D:\Visual Studio Projects\WyzwanieFormsGIT\WyzwanieForms\obj\Debug\WyzwanieForms.InviteForm.resources
