@@ -91,9 +91,6 @@
     <Compile Include="QuizFinishedForm.Designer.cs">
       <DependentUpon>QuizFinishedForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SocketClient.cs" />
-    <Compile Include="SocketServer.cs" />
-    <Compile Include="StateObject.cs" />
     <Compile Include="WaitingForm.cs">
       <SubType>Form</SubType>
     </Compile>
